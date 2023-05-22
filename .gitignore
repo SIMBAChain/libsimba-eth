@@ -1,0 +1,21 @@
+**__pycache__**
+**local_**
+/dist/
+**/build/
+docs/.doctrees
+**/.idea
+
+**_token.json
+**.log
+
+**.env
+**.venv
+**/junit.xml
+# Vim
+*.*~
+*.*.swp
+mypy.xml
+_mypy.xml
+flake8.xml
+
+**/.DS_Store
