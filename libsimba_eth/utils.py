@@ -1,4 +1,24 @@
-from typing import List, Tuple, Union
+#  Copyright (c) 2024 SIMBA Chain Inc. https://simbachain.com
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in
+#  all copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+#  THE SOFTWARE.
+
+from typing import List, Optional, Tuple, Union
 
 from Crypto.Hash import keccak
 
@@ -31,7 +51,7 @@ def convert_to_bytes32_array(
 
 
 def convert_bytes32_to_string(
-    bytes32_array: Union[List, Tuple, str], length: int = None
+    bytes32_array: Union[List, Tuple, str], length: Optional[int] = None
 ) -> str:
     """
     Convert a bytes32 in hex representation or an array of
@@ -82,7 +102,7 @@ def string_to_uint256(value: str, big_endian: bool = True) -> int:
     """
     hash_val = keccak_hash(value, as_hex=False)
     return (
-        int.from_bytes(hash_val, byteorder="big", signed=False)
+        int.from_bytes(hash_val, byteorder="big", signed=False)  # type: ignore
         if big_endian
-        else (int.from_bytes(hash_val, byteorder="little", signed=False))
+        else (int.from_bytes(hash_val, byteorder="little", signed=False))  # type: ignore
     )

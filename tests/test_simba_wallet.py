@@ -1,3 +1,23 @@
+#  Copyright (c) 2024 SIMBA Chain Inc. https://simbachain.com
+#
+#  Permission is hereby granted, free of charge, to any person obtaining a copy
+#  of this software and associated documentation files (the "Software"), to deal
+#  in the Software without restriction, including without limitation the rights
+#  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+#  copies of the Software, and to permit persons to whom the Software is
+#  furnished to do so, subject to the following conditions:
+#
+#  The above copyright notice and this permission notice shall be included in
+#  all copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+#  THE SOFTWARE.
+
 import unittest
 import pytest
 from libsimba.exceptions import SimbaWalletException, SimbaSigningException
@@ -173,3 +193,19 @@ class TestWallet(unittest.TestCase):
         with pytest.raises(SimbaWalletException) as exc:
             wallet.get_address()
         self.assertIn("No wallet loaded!", str(exc))
+
+    def test_signing(self):
+        account = Account(private_key="1837c1be8e2995ec11cda2b066151be2cfb48adf9e47b151d46adab3a21cdf67")
+        sig = account.sign_values(values=[("string", "hello"), ("uint256", 12)])
+        self.assertEqual(sig,
+                         "0x8c25852645d71a528aaa00a87908ba61cb8a380f3e4843c3d296cf7348b6224a0ffbd470a2b994d629c5dd80fb860c219b41e45534caa4ed54e4cd286be3e89e1c")
+
+        sig = account.sign_message("hello")
+        self.assertEqual(sig,
+                         "0x430119b79e1652978d552d5aac5b1f4ad567e59bb5b27d172674377719b4feda058c6f0559b58855287e16e470a84df2dc49e92b10d510d44febe068368262cf1c")
+
+        with pytest.raises(SimbaSigningException):
+            _ = account.sign_values(values=[("str", "hello"), ("uint256", 12)])
+
+        with pytest.raises(SimbaSigningException):
+            _ = account.sign_values(values=[("string", "hello"), ("uint256", "foo")])
